@@ -1,20 +1,20 @@
-import React from 'react'
-import { useContext } from 'react'
-import { AdminContext } from '../../context/AdminContext'
-import { useEffect } from 'react'
-import { AppContext } from '../../context/AppContext'
-import {assets }from '../../assets/assets.js'
+import React from "react";
+import { useContext } from "react";
+import { AdminContext } from "../../context/AdminContext";
+import { useEffect } from "react";
+import { AppContext } from "../../context/AppContext";
+import { assets } from "../../assets/assets.js";
 
 const AllAppointments = () => {
-
-  const {aToken, appointments,getAllAppointments} = useContext(AdminContext)
-  const {calculateAge,sloteDateFormat,currency} = useContext(AppContext)
-  useEffect(()=>{
+  const { aToken, appointments, getAllAppointments, cancelAppointment } =
+    useContext(AdminContext);
+  const { calculateAge, sloteDateFormat, currency } = useContext(AppContext);
+  useEffect(() => {
     if (aToken) {
-      getAllAppointments()
+      getAllAppointments();
     }
-  },[aToken])
-  
+  }, [aToken]);
+
   return (
     <div className="w-full max-w-6xl m-5">
       <p className="mb-3 text-lg font-medium">All Appointments</p>
@@ -60,9 +60,12 @@ const AllAppointments = () => {
               {item.amount}
             </p>
             {item.cancelled ? (
-              <p className='text-red-400 text-xs font-medium'>Cancelled</p>
+              <p className="text-red-400 text-xs font-medium">Cancelled</p>
+            ) : item.isCompleted ? (
+              <p className="text-green-500 text-xs font-medium">Completed</p>
             ) : (
               <img
+                onClick={() => cancelAppointment(item._id)}
                 className="w-10 cursor-pointer"
                 src={assets.cancel_icon}
                 alt=""
@@ -73,6 +76,6 @@ const AllAppointments = () => {
       </div>
     </div>
   );
-}
+};
 
-export default AllAppointments
+export default AllAppointments;
